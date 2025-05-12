@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
 @Rollback(value = false)
 class BookRepositoryTest {
 
@@ -22,7 +21,7 @@ class BookRepositoryTest {
     @Autowired BookRepository bookRepository;
 
 
-    @Test
+    @Test @Transactional
     void save() {
         //given
         Book book = new Book("Computer Structure", "Kim");
