@@ -1,7 +1,6 @@
 package mini.ebooklibrary.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,11 +23,8 @@ public class Book {
 
     /* 책 소개 */
     private String introduction;
-    /* 책 내용 */
-    private String data;
-
-    @Enumerated(EnumType.STRING)
-    private LoanState state;
+    /* 책 내용 URI */
+    private String dataUri;
 
     protected Book() {
     }

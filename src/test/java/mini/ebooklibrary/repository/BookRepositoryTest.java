@@ -1,19 +1,19 @@
 package mini.ebooklibrary.repository;
 
-import jakarta.annotation.PreDestroy;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import mini.ebooklibrary.domain.Book;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 @Rollback(value = false)
 class BookRepositoryTest {
 
@@ -21,7 +21,7 @@ class BookRepositoryTest {
     @Autowired BookRepository bookRepository;
 
 
-    @Test @Transactional
+    @Test
     void save() {
         //given
         Book book = new Book("Computer Structure", "Kim");
@@ -31,8 +31,50 @@ class BookRepositoryTest {
         em.clear();
 
         //then
-        Book findOne = bookRepository.findOne(book.getId());
+        Book findOne = bookRepository.findById(book.getId());
         System.out.println("findOne.toString() = " + findOne.toString());
-        Assertions.assertThat(findOne.getId()).isEqualTo(book.getId());
+        assertThat(findOne.getId()).isEqualTo(book.getId());
+    }
+
+    @Test @Transactional(readOnly = true)
+    void findAll() {
+        //given
+        Book book1 = new Book("Computer Structure1", "Kim");
+        Book book2 = new Book("Computer Structure2", "Choi");
+        Book book3 = new Book("Computer Structure3", "Han");
+        //when
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+        bookRepository.save(book3);
+        em.flush();
+        em.clear();
+
+        //then
+        List<Book> books = bookRepository.findAll();
+        for (Book book : books) {
+            System.out.println("book = " + book);
+        }
+        assertThat(books.size()).isEqualTo(3);
+    }
+
+    @Test
+    void delete() {
+        //given
+        Book book1 = new Book("book1", "author1");
+        Book book2 = new Book("book2", "author2");
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+        em.flush();
+        em.clear();
+
+        //when
+        Book find = bookRepository.findById(book1.getId());
+        bookRepository.delete(find);
+        em.flush();
+        em.clear();
+
+        //then
+        Book result = bookRepository.findById(book1.getId());
+        assertThat(result).isNull();
     }
 }

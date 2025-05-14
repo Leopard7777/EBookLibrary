@@ -17,12 +17,16 @@ public class BookRepository {
         em.persist(book);
     }
 
-    public Book findOne(Long id) {
+    public Book findById(Long id) {
         return em.find(Book.class, id);
     }
 
     public List<Book> findAll() {
         return em.createQuery("select b from Book b", Book.class)
                 .getResultList();
+    }
+
+    public void delete(Book book) {
+        em.remove(book);
     }
 }
