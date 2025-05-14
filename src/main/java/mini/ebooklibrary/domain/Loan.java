@@ -7,6 +7,12 @@ import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
 
+/**
+ * id
+ * book
+ * dueDate
+ * state
+ */
 @Entity
 @Getter @Setter
 public class Loan {
