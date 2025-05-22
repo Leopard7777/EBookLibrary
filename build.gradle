@@ -27,7 +27,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.h2database:h2:2.2.224' // 최신 버전 기준
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc' //JDBC Driver 추가
+    implementation 'com.h2database:h2:2.3.232' // 최신 버전 기준
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
