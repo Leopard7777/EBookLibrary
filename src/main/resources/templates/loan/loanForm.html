@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>도서 등록 폼</title>
+</head>
+<body>
+<!-- 홈으로 돌아가는 링크 -->
+<nav>
+    <a class="home-link" th:href="@{/}">🏠 홈으로 돌아가기</a>
+</nav>
+<h1>대출</h1>
+<form th:action="@{/loan/new}" th:object="${loanForm}" method="post">
+    <div>
+        <label for="title">도서명:</label>
+        <input type="text" id="title" th:field="*{title}" placeholder="도서명을 입력하세요" required />
+    </div>
+    <div>
+        <label for="username">사용자명:</label>
+        <input type="text" id="username" th:field="*{username}" placeholder="사용자 이름을 입력하세요" required />
+    </div>
+    <div>
+        <button type="submit">등록</button>
+    </div>
+</form>
+</body>
+</html>

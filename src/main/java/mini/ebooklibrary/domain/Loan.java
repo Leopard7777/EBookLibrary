@@ -3,7 +3,6 @@ package mini.ebooklibrary.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.lang.NonNull;
 
 import java.time.LocalDate;
 
@@ -30,18 +29,23 @@ public class Loan {
     @JoinColumn(name = "book_id")
     private Book book;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(nullable = false)
     private LocalDate dueDate;
 
     @Enumerated(EnumType.STRING)
-    private LoanState state;
+    private LoanStatus status;
 
     protected Loan() {
     }
 
-    public Loan(Book book, int loanPeriod, LoanState state) {
+    public Loan(Book book, User user, int loanPeriod, LoanStatus state) {
         this.book = book;
+        this.user = user;
         this.dueDate = LocalDate.now().plusDays(loanPeriod); // 대출 기간 2주
-        this.state = state;
+        this.status = state;
     }
 }

@@ -19,7 +19,7 @@ public class Book {
     private LocalDate publishedDate;
 
     /* ISBN 13자리 정수 */
-    private Integer isbn;
+    private String isbn;
 
     /* 책 소개 */
     private String introduction;

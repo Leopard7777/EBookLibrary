@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>E-Book 도서관</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; }
+        .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { color: #d9534f; }
+        p { margin: 20px 0; font-size: 1.1em; }
+        .btn { display: inline-block; padding: 10px 20px; background-color: #0275d8; color: #fff; text-decoration: none; border-radius: 4px; }
+        .btn:hover { background-color: #025aa5; }
+    </style>
+</head>
+<body>
+    <h1>E-Book 도서관  </h1>
+
+
+    <div th:if="${session.loginUser != null}">
+        현재 사용자: <span th:text="${session.loginUser.username}">사용자명</span>
+        <p><a href="logout">로그아웃</a></p>
+    </div>
+    <div th:if="${session.loginUser == null}">
+        <p><a href="login">로그인</a></p>
+    </div>
+
+    <h2><p th:if="${session.loginUser != null}"><a href="loan/new"> 도서 대출 </a></p></h2>
+    <h2><p th:if="${session.loginUser != null}"><a href="loan/loans"> 대출 목록 </a></p></h2>
+    <h2><p th:if="${session.loginUser != null}">
+        <a th:href="@{'/history/' + ${session.loginUser.id}}"> 이력 </a>
+    </p></h2>
+    <h2><p><a href="books"> 도서 목록 </a></p></h2>
+
+    <h2><p th:text="${errorMessage}">errorMessage</p></h2>
+
+</body>
+</html>

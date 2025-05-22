@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <!-- 홈으로 돌아가는 링크 -->
+    <nav>
+        <a class="home-link" th:href="@{/}">🏠 홈으로 돌아가기</a>
+    </nav>
+    <title>대출 불가</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; }
+        .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h1 { color: #d9534f; }
+        p { margin: 20px 0; font-size: 1.1em; }
+        .btn { display: inline-block; padding: 10px 20px; background-color: #0275d8; color: #fff; text-decoration: none; border-radius: 4px; }
+        .btn:hover { background-color: #025aa5; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>대출 불가</h1>
+    <p th:text="${errorMessage}">해당 도서는 현재 대출이 불가능합니다.</p>
+    <a class="btn" th:href="@{/loan/new}">대출 폼으로 돌아가기</a>
+</div>
+</body>
+</html>

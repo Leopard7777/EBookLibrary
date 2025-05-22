@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>도서 목록</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f5f5f5; }
+    </style>
+</head>
+<body>
+<!-- 홈으로 돌아가는 링크 -->
+<nav>
+    <a class="home-link" th:href="@{/}">🏠 홈으로 돌아가기</a>
+</nav>
+<h1>도서 목록</h1>
+<table>
+    <thead>
+    <tr>
+        <th>책 제목</th>
+        <th>저자</th>
+        <th>출판일</th>
+        <th>ISBN</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.title}">Sample Name</td>
+        <td th:text="${book.author}">Sample Author</td>
+        <td th:text="${#temporals.format(book.publishedDate, 'yyyy-MM-dd')}">2025-01-01</td>
+        <td th:text="${book.isbn}">1234567890123</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

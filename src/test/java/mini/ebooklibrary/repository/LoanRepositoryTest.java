@@ -1,13 +1,10 @@
 package mini.ebooklibrary.repository;
 
 import jakarta.persistence.EntityManager;
-import mini.ebooklibrary.domain.Book;
-import mini.ebooklibrary.domain.Loan;
-import mini.ebooklibrary.domain.LoanState;
+import mini.ebooklibrary.domain.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -15,22 +12,24 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-@Rollback(value = false)
 @Transactional
 class LoanRepositoryTest {
 
-    @Autowired LoanRepository loanRepository;
-    @Autowired BookRepository bookRepository;
-    @Autowired EntityManager em;
+    @Autowired private LoanRepository loanRepository;
+    @Autowired private BookRepository bookRepository;
+    @Autowired private UserRepository userRepository;
+    @Autowired private EntityManager em;
 
 
     @Test
     void save() {
         //given
         Book book = new Book("book1", "author1");
-        Loan loan = new Loan(book, 14, LoanState.LOANED);
+        User user = new User("hihi", "123", Role.USER);
+        Loan loan = new Loan(book, user, 14, LoanStatus.LOANED);
 
         //when
+        userRepository.save(user);
         bookRepository.save(book);
         loanRepository.save(loan);
 
@@ -49,13 +48,16 @@ class LoanRepositoryTest {
         Book book1 = new Book("book1", "author1");
         Book book2 = new Book("book2", "author1");
         Book book3 = new Book("book3", "author1");
-        Loan loan1 = new Loan(book1, 14, LoanState.LOANED);
-        Loan loan2 = new Loan(book2, 14, LoanState.LOANED);
-        Loan loan3 = new Loan(book3, 14, LoanState.LOANED);
+        User user = new User("hihi", "1234", Role.USER);
+        Loan loan1 = new Loan(book1, user, 14, LoanStatus.LOANED);
+        Loan loan2 = new Loan(book2, user, 14, LoanStatus.LOANED);
+        Loan loan3 = new Loan(book3, user, 14, LoanStatus.LOANED);
 
         bookRepository.save(book1);
         bookRepository.save(book2);
         bookRepository.save(book3);
+
+        userRepository.save(user);
 
         loanRepository.save(loan1);
         loanRepository.save(loan2);
@@ -76,11 +78,13 @@ class LoanRepositoryTest {
         //given
         Book book1 = new Book("book1", "author1");
         Book book2 = new Book("book2", "author2");
-        Loan loan1 = new Loan(book1, 14, LoanState.LOANED);
-        Loan loan2 = new Loan(book2, 14, LoanState.LOANED);
+        User user = new User("hihi", "1234", Role.USER);
+        Loan loan1 = new Loan(book1, user, 14, LoanStatus.LOANED);
+        Loan loan2 = new Loan(book2, user, 14, LoanStatus.LOANED);
 
         bookRepository.save(book1);
         bookRepository.save(book2);
+        userRepository.save(user);
         loanRepository.save(loan1);
         loanRepository.save(loan2);
         em.flush();
@@ -95,5 +99,30 @@ class LoanRepositoryTest {
         //then
         Loan result = loanRepository.findById(loan1.getId());
         assertThat(result).isNull();
+    }
+
+    @Test
+    void findByUser() {
+        //given
+        Book book1 = new Book("book1", "author1");
+        Book book2 = new Book("book2", "author2");
+        User user = new User("hihi", "1234", Role.USER);
+        Loan loan1 = new Loan(book1, user, 14, LoanStatus.LOANED);
+        Loan loan2 = new Loan(book2, user, 14, LoanStatus.LOANED);
+
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+        userRepository.save(user);
+        loanRepository.save(loan1);
+        loanRepository.save(loan2);
+        em.flush();
+        em.clear();
+
+        //when
+        List<Loan> findByUser = loanRepository.findByUser(user);
+
+        //then
+        System.out.println("findByUser.toString() = " + findByUser.toString());
+        assertThat(findByUser.size()).isEqualTo(2);
     }
 }

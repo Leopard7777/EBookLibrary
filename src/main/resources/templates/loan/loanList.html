@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>대출 목록</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+<h1>대출 목록</h1>
+<a class="home-link" th:href="@{/}">🏠 홈으로 돌아가기</a>
+    <table>
+        <thead>
+        <tr>
+            <th>책 제목</th>
+            <th>대출일</th>
+            <th>반납일</th>
+            <th>반납 처리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="loan : ${loans}">
+            <td th:text="${loan.book.name}"></td>
+            <td th:text="${loan.user.username}"></td>
+            <td th:text="${#temporals.format(loan.dueDate, 'yyyy-MM-dd')}"></td>
+            <td>
+                <form th:action="@{/loan/return}" method="post">
+                    <input type="hidden" name="title" th:value="${loan.book.name}" />
+                    <input type="hidden" name="username" th:value="${loan.user.username}" />
+                    <input type="hidden" name="dueDate" th:value="${loan.dueDate}" />
+                    <input type="hidden" name="status" th:value="${loan.status}" />
+<!--                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />-->
+
+                    <button type="submit" th:if="${loan.status == loan.status.LOANED}">반납 처리</button>
+                </form>
+                <span th:if="${loan.status == loan.status.RETURNED}">이미 반납됨</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>
